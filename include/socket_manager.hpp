@@ -15,6 +15,7 @@ public:
     ~SocketManager();
 
     bool connectToServer();
+    void closeConnection();
     void sendData(std::string message);
     std::string receiveData();
 

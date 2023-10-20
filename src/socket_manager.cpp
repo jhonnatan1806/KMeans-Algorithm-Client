@@ -28,6 +28,12 @@ bool SocketManager::connectToServer()
     return true;
 }
 
+void SocketManager::closeConnection()
+{
+    close(clientSocket);
+}
+
+
 void SocketManager::sendData(std::string message)
 {
     try {

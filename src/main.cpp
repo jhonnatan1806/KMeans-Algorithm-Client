@@ -41,6 +41,11 @@ int main(int argc, char* argv[]) {
         // 4. Enviar mensaje al servidor
         std::string messageToSend = JSONParse::createMessage(nodes, gathers, sendData, changed);
         client.sendData(messageToSend);
+        if (sendData) {
+            client.closeConnection();
+            return 0;
+        }
+
 
         // 5. Recibir datos del servidor
         messageReceived = client.receiveData();

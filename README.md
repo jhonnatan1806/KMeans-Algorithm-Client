@@ -18,3 +18,9 @@ Ejecutar cliente
 ```bash
 ./client <ip> <puerto>
 ```
+
+Makefile para automatizar compilación y ejecución en la ip y puerto por defecto (127.0.0.1:8189)
+
+```bash
+make run
+```

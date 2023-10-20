@@ -50,16 +50,38 @@ void SocketManager::sendData(std::string message)
 }
 
 std::string SocketManager::receiveData()
-{
+{ 
     try {
-        char buffer[1024] = {0};
-        ssize_t valread = read(clientSocket, buffer, 1024);
+        std::string receivedData;  // Aquí se almacenará la data recibida
+        char buffer[1024];
+        ssize_t valread = 0;
+
+        while (true) {
+            valread = read(clientSocket, buffer, 1024);
+
+            if (valread <= 0) {
+                // La conexión se cerró o hubo un error.
+                break;
+            }
+
+            receivedData.append(buffer, valread);
+
+            // Busca la cadena "changed" en los datos recibidos
+            size_t sendataPos = receivedData.find("\"changed\":true");
+            if (sendataPos != std::string::npos) {
+                break;
+            }
+            
+            size_t sendataFalsePos = receivedData.find("\"changed\":false");
+            if (sendataFalsePos != std::string::npos) {
+                break;
+            }
+        }
 
         if (valread == -1) {
             throw std::runtime_error("Error receiving data");
         }
-
-        return buffer;
+        return receivedData;
     } catch (const std::exception &e) {
         std::cerr << "ReceiveData Error: " << e.what() << std::endl;
         return "";
